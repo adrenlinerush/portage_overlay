@@ -25,7 +25,6 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/geoip-0.8.6
 	>=dev-ruby/highline-1.5.1
 	>=dev-ruby/hoe-2.4.0
-	>=dev-ruby/json-1.2.0
 	>=dev-ruby/json_pure-1.2.0
 	>=dev-ruby/macaddr-1.0.0
 	>=dev-ruby/mime-types-1.16

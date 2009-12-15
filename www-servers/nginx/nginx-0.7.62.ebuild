@@ -112,8 +112,8 @@ pkg_postinst() {
 			chown ${PN}:${PN} "${ROOT}"/etc/ssl/${PN}/${PN}.{crt,csr,key,pem}
 		fi
 		if use gitorious ; then
-			install_cert /etc/sssl/${PN}/gitorious
-			chown ${PN}:${PN} "${ROOT}"/etc/ss/${PN}/gitorious.{crt,csr,key,pem}
+			install_cert /etc/ssl/${PN}/gitorious
+			chown ${PN}:${PN} "${ROOT}"/etc/ssl/${PN}/gitorious.{crt,csr,key,pem}
 		fi
 	}
 }
