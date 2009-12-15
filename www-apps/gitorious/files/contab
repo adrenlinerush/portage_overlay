@@ -1,0 +1,4 @@
+@reboot   cd /var/www/gitorious/site && script/git-daemon -d
+@reboot   cd /var/www/gitorious/site && script/poller start
+@reboot   cd /var/www/gitorious/site && /usr/bin/rake ultrasphinx:daemon:start
+* * * * * cd /var/www/gitorious/site && /usr/bin/rake ultrasphinx:index

@@ -1,0 +1,22 @@
+#!/bin/bash
+#Gitorious Post Installation Script
+
+#Generate cookie secret and pipe to configuration
+cookie_secret="cookie_secret: "$(uuidgen)
+echo "  "$cookie_secret >> gitorious.yml
+
+#Create Crontab Entries
+crontab -u gitorious crontab
+
+#Create emty Database
+mysql < createdb.sql
+
+#Fill Database
+cd /var/www/gitorious/site
+rake db:migrate
+
+#Create Required Directories
+mkdir /var/www/gitorious/tmp
+mkdir /var/www/gitorious/tarballs
+mkdir /var/www/gitorious/repositories
+

@@ -1,0 +1,42 @@
+user nginx nginx;
+worker_processes 4;
+
+error_log /var/log/nginx/error.log;
+pid /var/run/nginx.pid;
+
+events {
+  worker_connections 1024;
+}
+
+http {
+  passenger_root /usr/lib64/ruby/gems/1.8/gems/passenger-2.2.5;
+  passenger_ruby /usr/bin/ruby;
+
+  include mime.types;
+  default_type application/octet-stream;
+
+  sendfile on;
+  keepalive_timeout 65;
+  gzip on;
+
+  server {
+    listen 80;
+    server_name sarlacc sarlacc.countrystone.com git.countrystone.com;
+	
+    root /var/www/gitorious/site/public;
+    passenger_enabled on;
+  }
+
+  server {
+    listen 443;
+    server_name sarlacc sarlacc.countrystone.com git.countrystone.com;
+
+    ssl on;
+    ssl_certificate cert/gitorious.crt;
+    ssl_certificate_key cert/gitorious.key;
+
+    root /var/www/gitorious/site/public;
+    passenger_enabled on;
+  }
+}
+
