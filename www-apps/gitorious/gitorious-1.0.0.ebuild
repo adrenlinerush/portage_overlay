@@ -7,7 +7,7 @@ inherit eutils
 DESCRIPTION="Gitorious aims to provide a great way of doing distributed opensource code collaboration."
 
 HOMEPAGE="http://gitorious.org/gitorious"
-SRC_URI="http://gitorious.org/gitorious/mainline/archive-tarball/master"
+SRC_URI="http://adrenlinerush.net/package/${P}.tar.gz"
 LICENSE="AGPLv3"
 SLOT="0"
 KEYWORDS="amd64 ~ppc x86 ~x86-fbsd"
@@ -61,15 +61,16 @@ src_unpack() {
 }
 
 src_install() {
-	dodir /var/www/gitorious/site/
-	cp -R "${S}/" "${D}/" || die "Install failed!"
+	DEST_DIR="/var/www/gitorious/site/"
+	dodir "${DEST_DIR}"
+	cp -R "${S}/app" "${S}/AUTHORS" "${S}/bin" "${S}/config" "${S}/data" "${S}/db" "${S}/doc" "${S}/HACKING" "${S}/lib" "${S}/LICENSE" "${S}/log" "${S}/public"  "${S}/Rakefile" "${S}/README" "${S}/script" "${S}/test" "${S}/tmp" "${S}/TODO.txt" "${S}/vendor" "${D}/" || die "Install failed!"
 	
-	cp "${FILESDIR}"/gitorious.yml "${D}"/config/
-	cp "${FILESDIR}"/database.yml "${D}"/config/
-	cp "${D}"/config/broker.yml.example "${D}"/config/broker.yml
+	cp "${FILESDIR}"/gitorious.yml "${DEST_DIR}"/config/
+	cp "${FILESDIR}"/database.yml "${DEST_DIR}"/config/
+	cp "${D}"/config/broker.yml.example "${DEST_DIR}"/config/broker.yml
 	
 	cookie_secret="cookie_secret: "$(uuidgen)
-	echo "  "$cookie_secret >> "${D}"/gitorious.yml
+	echo "  "$cookie_secret >> "${DEST_DIR}"/gitorious.yml
 	
 	if use mysql ; then
 		mysql < "${FILESDIR}"/createdb.sql
