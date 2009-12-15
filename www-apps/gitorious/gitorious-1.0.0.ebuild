@@ -4,7 +4,7 @@
 
 inherit eutils 
 
-DESCRIPTION="Gitorious aims to provide a great way of doing distributed opensource code collaboration. It also powers this site."
+DESCRIPTION="Gitorious aims to provide a great way of doing distributed opensource code collaboration."
 
 HOMEPAGE="http://gitorious.org/gitorious"
 SRC_URI="http://gitorious.org/gitorious/mainline/archive-tarball/master"
@@ -46,7 +46,7 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/mysql-ruby-2.8
 	>=dev-ruby/ruby-yadis-0.3.4
 	>=dev-ruby/ruby-hmac-0.3.2
-	>=www-servers/nginx-0.7.62[passenger gitorious ssl]
+	>=www-servers/nginx-0.7.62[passenger,gitorious,ssl]
 	mysql? ( >=dev-db/mysql-5.0.84-r1 )"
 RDEPEND="${DEPEND}"
 
@@ -70,18 +70,18 @@ src_install() {
 	cp "${D}"/config/broker.yml.example "${D}"/config/broker.yml
 	
 	cookie_secret="cookie_secret: "$(uuidgen)
-	doexe echo "  "$cookie_secret >> "${D}"/gitorious.yml
+	echo "  "$cookie_secret >> "${D}"/gitorious.yml
 	
 	if use mysql ; then
-		doexe mysql < "${FILESDIR}"/createdb.sql
+		mysql < "${FILESDIR}"/createdb.sql
 		
-		dodir /var/www/gitorious/site
-		doexe rake db:migrate
+		cd /var/www/gitorious/site
+		rake db:migrate
 	fi
 }
 
 pkg_postinst() {
-	doexe crontab -u gitorious "${FILESDIR}"/crontab
+	crontab -u gitorious "${FILESDIR}"/crontab
 	
 	dodir /var/www/gitorious/tmp
 	dodir /var/www/gitorious/tarballs
