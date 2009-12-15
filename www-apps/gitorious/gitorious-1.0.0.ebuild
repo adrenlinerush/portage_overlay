@@ -21,7 +21,7 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/diff-lcs-1.1.2
 	>=dev-ruby/echoe-4.0
 	>=dev-ruby/eventmachine-0.12.10
-	>=dev-ruby/fasthread-1.0.7
+	>=dev-ruby/fastthread-1.0.7
 	>=dev-ruby/geoip-0.8.6
 	>=dev-ruby/highline-1.5.1
 	>=dev-ruby/hoe-2.4.0
@@ -32,7 +32,7 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/net-scp-1.0.2
 	>=dev-ruby/net-ssh-2.0.16
 	>=dev-ruby/oniguruma-1.1.0
-	>=dev-ruby/passenger-2.2.5
+	>=www-misc/passenger-2.2.5
 	>=dev-ruby/rack-1.0.1
 	>=dev-ruby/rake-0.8.7
 	>=dev-ruby/raspell-1.1
@@ -41,7 +41,7 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/ruby-openid-2.1.7
 	>=dev-ruby/rubyforge-2.0.3
 	>=dev-ruby/stomp-1.1
-	>=dev-ruby/stomperver-0.9.9
+	>=dev-ruby/stompserver-0.9.9
 	>=dev-ruby/uuid-2.1.0
 	>=dev-ruby/mysql-ruby-2.8
 	>=dev-ruby/ruby-yadis-0.3.4
