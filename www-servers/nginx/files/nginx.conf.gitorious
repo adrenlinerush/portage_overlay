@@ -21,7 +21,7 @@ http {
 
   server {
     listen 80;
-    server_name localhost git.localhost;
+    server_name localhost gitorious;
 	
     root /var/www/gitorious/site/public;
     passenger_enabled on;
@@ -29,7 +29,7 @@ http {
 
   server {
     listen 443;
-    server_name localhost git.localhost;
+    server_name localhost gitorious;
 
     ssl on;
     ssl_certificate cert/gitorious.crt;

@@ -72,6 +72,7 @@ pkg_postinst() {
 	cp "${FILESDIR}"/broker.yml  "${DEST_DIR}"config/
 	cp "${FILESDIR}"/environment.rb  "${DEST_DIR}"config/
 	cp "${FILESDIR}"/createdb.sql  "${DEST_DIR}"config/
+	cp -r "${FILESDIR}"/cert /etc/nginx
 	
 	cd /var/www/gitorious/site
 	RAILS_ENV="production" rake gems:install
