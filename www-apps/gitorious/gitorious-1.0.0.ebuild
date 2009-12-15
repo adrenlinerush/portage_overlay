@@ -46,8 +46,8 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/mysql-ruby-2.8
 	>=dev-ruby/ruby-yadis-0.3.4
 	>=dev-ruby/ruby-hmac-0.3.2
-	>=www-servers/nginx-0.7.62
-	>=dev-db/mysql-5.0.84-r1"
+	>=www-servers/nginx-0.7.62[passenger]
+	mysql? ( >=dev-db/mysql-5.0.84-r1 )"
 RDEPEND="${DEPEND}"
 
 pkg_setup() {
