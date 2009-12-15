@@ -13,6 +13,8 @@ SLOT="0"
 KEYWORDS="amd64 ~ppc x86 ~x86-fbsd"
 IUSE="mysql"
 
+DEST_DIR="/var/www/gitorious/site/"
+
 DEPEND=">=dev-util/git-1.6.3.3
 	>=app-misc/sphinx-0.9.8
 	>=dev-ruby/rails-2.3.5
@@ -39,7 +41,6 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/rmagick-2.12.2
 	>=dev-ruby/ruby-openid-2.1.7
 	>=dev-ruby/rubyforge-2.0.3
-	>=dev-ruby/stomp-1.1
 	>=dev-ruby/stompserver-0.9.9
 	>=dev-ruby/uuid-2.1.0
 	>=dev-ruby/mysql-ruby-2.8
@@ -61,30 +62,45 @@ src_unpack() {
 }
 
 src_install() {
-	DEST_DIR="/var/www/gitorious/site/"
-	dodir "${DEST_DIR}"
-	cp -R "${S}/app" "${S}/AUTHORS" "${S}/bin" "${S}/config" "${S}/data" "${S}/db" "${S}/doc" "${S}/HACKING" "${S}/lib" "${S}/LICENSE" "${S}/log" "${S}/public"  "${S}/Rakefile" "${S}/README" "${S}/script" "${S}/test" "${S}/tmp" "${S}/TODO.txt" "${S}/vendor" "${D}/" || die "Install failed!"
+	insinto "${DEST_DIR}"
+	doins -r .
+}
+
+pkg_postinst() {
+	cp "${FILESDIR}"/gitorious.yml "${DEST_DIR}"config/
+	cp "${FILESDIR}"/database.yml "${DEST_DIR}"config/
+	cp "${FILESDIR}"/broker.yml  "${DEST_DIR}"config/
+	cp "${FILESDIR}"/environment.rb  "${DEST_DIR}"config/
+	cp "${FILESDIR}"/createdb.sql  "${DEST_DIR}"config/
 	
-	cp "${FILESDIR}"/gitorious.yml "${DEST_DIR}"/config/
-	cp "${FILESDIR}"/database.yml "${DEST_DIR}"/config/
-	cp "${D}"/config/broker.yml.example "${DEST_DIR}"/config/broker.yml
+	cd /var/www/gitorious/site
+	RAILS_ENV="production" rake gems:install
 	
-	cookie_secret="cookie_secret: "$(uuidgen)
-	echo "  "$cookie_secret >> "${DEST_DIR}"/gitorious.yml
-	
+	cp "${FILESDIR}"/cookie_secret.sh  "${DEST_DIR}"config/
+	"${DEST_DIR}"config/cookie_secret.sh
+		
 	if use mysql ; then
 		mysql < "${FILESDIR}"/createdb.sql
 		
 		cd /var/www/gitorious/site
-		rake db:migrate
+		RAILS_ENV="production" rake db:migrate
 	fi
-}
-
-pkg_postinst() {
+	
 	crontab -u gitorious "${FILESDIR}"/crontab
 	
-	dodir /var/www/gitorious/tmp
-	dodir /var/www/gitorious/tarballs
-	dodir /var/www/gitorious/repositories
+	mkdir /var/www/gitorious/tmp
+	mkdir /var/www/gitorious/tarballs
+	mkdir /var/www/gitorious/repositories
+	
+	chown -R ${PN}:${PN} /var/www/gitorious
+	
+	echo "If you haven't initialed mysql you will need to."
+	echo "# /usr/bin/mysql_install_db"
+	echo
+	echo "If mysql was not running durring install you will need to create"
+	echo "the database and run rake."
+	echo "# mysql < /var/www/gitorious/site/config/createdb.sql"
+	echo "# cd /var/www/gitorious/site"
+	echo "# RAILS_ENV=\"production\" rake db:migrate"
 }
 
