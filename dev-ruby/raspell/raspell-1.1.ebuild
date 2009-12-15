@@ -14,3 +14,5 @@ SLOT="0"
 KEYWORDS="amd64 ~ia64 ~ppc ~ppc64 ~sparc x86 ~x86-fbsd"
 IUSE=""
 
+DEPEND=">=app-dicts/aspell-en-6.0.0"
+RDEPEND="${DEPEND}"
