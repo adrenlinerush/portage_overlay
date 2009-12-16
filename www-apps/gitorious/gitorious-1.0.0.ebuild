@@ -14,6 +14,7 @@ KEYWORDS="amd64 ~ppc x86 ~x86-fbsd"
 IUSE="mysql"
 
 DEST_DIR="/var/www/gitorious/site/"
+USER="git"
 
 DEPEND=">=dev-util/git-1.6.3.3
 	>=app-misc/sphinx-0.9.8
@@ -52,8 +53,8 @@ RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	ebegin "Creating gitorious user and group"
-	enewgroup ${PN}
-	enewuser ${PN} -1 -1 -1 ${PN}
+	enewgroup ${USER}
+	enewuser ${USER} -1 -1 -1 ${USER}
 	eend ${?}
 }
 
@@ -87,13 +88,13 @@ pkg_postinst() {
 		RAILS_ENV="production" rake db:migrate
 	fi
 	
-	crontab -u gitorious "${FILESDIR}"/crontab
+	crontab -u ${USER} "${FILESDIR}"/crontab
 	
 	mkdir /var/www/gitorious/tmp
 	mkdir /var/www/gitorious/tarballs
 	mkdir /var/www/gitorious/repositories
 	
-	chown -R ${PN}:${PN} /var/www/gitorious
+	chown -R ${USER}:${USER} /var/www/gitorious
 	
 	echo "If you haven't initialed mysql you will need to."
 	echo "# /usr/bin/mysql_install_db"
