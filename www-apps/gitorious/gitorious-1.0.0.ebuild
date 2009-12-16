@@ -47,6 +47,7 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/mysql-ruby-2.8
 	>=dev-ruby/ruby-yadis-0.3.4
 	>=dev-ruby/ruby-hmac-0.3.2
+	>=dev-ruby/Ruby-MemCache-0.0.4
 	>=www-servers/nginx-0.7.62[passenger,gitorious,ssl]
 	mysql? ( >=dev-db/mysql-5.0.84-r1 )"
 RDEPEND="${DEPEND}"
@@ -96,6 +97,7 @@ pkg_postinst() {
 	mkdir /var/www/gitorious/tmp
 	mkdir /var/www/gitorious/tarballs
 	mkdir /var/www/gitorious/repositories
+	mkdir /var/www/gitorious/pids
 	
 	RAILS_ENV="production" rake ultrasphinx:configure
 	
