@@ -54,7 +54,7 @@ RDEPEND="${DEPEND}"
 pkg_setup() {
 	ebegin "Creating gitorious user and group"
 	enewgroup ${USER}
-	enewuser ${USER} -1 -1 -1 ${USER}
+	enewuser ${USER} -1 /bin/bash ${DEST_DIR} ${USER}",cron,crontab"
 	eend ${?}
 }
 
@@ -73,11 +73,14 @@ pkg_postinst() {
 	cp "${FILESDIR}"/broker.yml  "${DEST_DIR}"config/
 	cp "${FILESDIR}"/environment.rb  "${DEST_DIR}"config/
 	cp "${FILESDIR}"/createdb.sql  "${DEST_DIR}"config/
+	cp "${FILESDIR}"/production.conf  "${DEST_DIR}"config/ultrasphinx/
 	cp -r "${FILESDIR}"/cert /etc/nginx
+	
+	chmod -R 770 "${DEST_DIR}"script
 	
 	cd /var/www/gitorious/site
 	RAILS_ENV="production" rake gems:install
-	
+		
 	cp "${FILESDIR}"/cookie_secret.sh  "${DEST_DIR}"config/
 	"${DEST_DIR}"config/cookie_secret.sh
 		
@@ -88,13 +91,15 @@ pkg_postinst() {
 		RAILS_ENV="production" rake db:migrate
 	fi
 	
-	crontab -u ${USER} "${FILESDIR}"/crontab
+	crontab -u git "${FILESDIR}"/crontab
 	
 	mkdir /var/www/gitorious/tmp
 	mkdir /var/www/gitorious/tarballs
 	mkdir /var/www/gitorious/repositories
 	
-	chown -R ${USER}:${USER} /var/www/gitorious
+	RAILS_ENV="production" rake ultrasphinx:configure
+	
+	chown -R git:git /var/www/gitorious
 	
 	echo "If you haven't initialed mysql you will need to."
 	echo "# /usr/bin/mysql_install_db"
