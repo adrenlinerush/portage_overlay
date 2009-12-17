@@ -100,6 +100,7 @@ pkg_postinst() {
 	mkdir /var/www/gitorious/repositories
 	mkdir /var/www/gitorious/pids
 	mkdir /var/www/gitorious/site/tmp/pids
+	mkdir /var/www/gitorious/site/.ssh
 	
 	RAILS_ENV="production" rake ultrasphinx:configure
 	
