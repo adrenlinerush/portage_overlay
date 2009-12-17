@@ -48,6 +48,7 @@ DEPEND=">=dev-util/git-1.6.3.3
 	>=dev-ruby/ruby-yadis-0.3.4
 	>=dev-ruby/ruby-hmac-0.3.2
 	>=dev-ruby/Ruby-MemCache-0.0.4
+	>=net-misc/memcached-1.4.1
 	>=www-servers/nginx-0.7.62[passenger,gitorious,ssl]
 	mysql? ( >=dev-db/mysql-5.0.84-r1 )"
 RDEPEND="${DEPEND}"
