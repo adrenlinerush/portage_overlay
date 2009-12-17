@@ -56,7 +56,7 @@ RDEPEND="${DEPEND}"
 pkg_setup() {
 	ebegin "Creating gitorious user and group"
 	enewgroup ${USER}
-	enewuser ${USER} -1 /bin/bash ${DEST_DIR} ${USER}",cron,crontab"
+	enewuser ${USER} -1 /bin/bash /var/www/gitorious ${USER}",cron,crontab"
 	eend ${?}
 }
 
@@ -77,6 +77,7 @@ pkg_postinst() {
 	cp "${FILESDIR}"/createdb.sql  "${DEST_DIR}"config/
 	cp "${FILESDIR}"/production.conf  "${DEST_DIR}"config/ultrasphinx/
 	cp -r "${FILESDIR}"/cert /etc/nginx
+	cp "${FILESDIR}"/bash.rc /var/www/gitorious
 	
 	chmod -R 770 "${DEST_DIR}"script
 	
@@ -100,7 +101,7 @@ pkg_postinst() {
 	mkdir /var/www/gitorious/repositories
 	mkdir /var/www/gitorious/pids
 	mkdir /var/www/gitorious/site/tmp/pids
-	mkdir /var/www/gitorious/site/.ssh
+	mkdir /var/www/gitorious/.ssh
 	
 	RAILS_ENV="production" rake ultrasphinx:configure
 	
