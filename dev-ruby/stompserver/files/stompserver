@@ -5,13 +5,13 @@
 
 start() {
 	ebegin "Starting Stompserver"
-	start-stop-daemon --start --quiet -b -m -p /var/run/stompserver.pid --exec /usr/bin/stompserver --chuid git:git
+	start-stop-daemon --start --quiet -b -m -p  /var/www/gitorious/pids/stompserver.pid --exec /usr/bin/stompserver --chuid git:git
 	eend $?
 }
 
 stop() {
 	ebegin "Shutting down Stompserver"
-	start-stop-daemon --stop --quiet -p /var/run/stompserver.pid --user git
+	start-stop-daemon --stop --quiet -p  /var/www/gitorious/pids/stompserver.pid --user git
 	eend $?
 }
 

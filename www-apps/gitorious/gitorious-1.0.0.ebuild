@@ -113,5 +113,8 @@ pkg_postinst() {
 	echo "# mysql < /var/www/gitorious/site/config/createdb.sql"
 	echo "# cd /var/www/gitorious/site"
 	echo "# RAILS_ENV=\"production\" rake db:migrate"
+	echo
+	echo "Services need to be started are: mysql, nginx, memcahced, stompserver"
+	echo "You can either restart or manually start what is in the crontab."
 }
 
