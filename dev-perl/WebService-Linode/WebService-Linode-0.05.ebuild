@@ -13,5 +13,9 @@ SLOT="0"
 KEYWORDS="~amd64 ~sparc ~x86"
 IUSE=""
 
+
+RDEPEND="dev-perl/JSON"
+DEPEND="${RDEPEND}"
+
 SRC_TEST="do"
 
