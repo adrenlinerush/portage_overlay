@@ -14,6 +14,7 @@ KEYWORDS="amd64 ~ppc x86 ~x86-fbsd"
 IUSE="mysql"
 
 DEST_DIR="/var/www/gitorious/site/"
+HOME_DIR="/var/www/gitorious"
 USER="git"
 
 DEPEND=">=dev-util/git-1.6.3.3
@@ -56,7 +57,7 @@ RDEPEND="${DEPEND}"
 pkg_setup() {
 	ebegin "Creating gitorious user and group"
 	enewgroup ${USER}
-	enewuser ${USER} -1 /bin/bash /var/www/gitorious ${USER}",cron,crontab"
+	enewuser ${USER} -1 /bin/bash ${HOME_DIR} ${USER}",cron,crontab"
 	eend ${?}
 }
 
@@ -77,11 +78,11 @@ pkg_postinst() {
 	cp "${FILESDIR}"/createdb.sql  "${DEST_DIR}"config/
 	cp "${FILESDIR}"/production.conf  "${DEST_DIR}"config/ultrasphinx/
 	cp -r "${FILESDIR}"/cert /etc/nginx
-	cp "${FILESDIR}"/bash.rc /var/www/gitorious
+	cp "${FILESDIR}"/.bashrc /var/www/gitorious
 	
 	chmod -R 770 "${DEST_DIR}"script
 	
-	cd /var/www/gitorious/site
+	cd "${DEST_DIR}"
 	RAILS_ENV="production" rake gems:install
 		
 	cp "${FILESDIR}"/cookie_secret.sh  "${DEST_DIR}"config/
@@ -90,22 +91,27 @@ pkg_postinst() {
 	if use mysql ; then
 		mysql < "${FILESDIR}"/createdb.sql
 		
-		cd /var/www/gitorious/site
+		cd "${DEST_DIR}"
 		RAILS_ENV="production" rake db:migrate
 	fi
 	
 	crontab -u git "${FILESDIR}"/crontab
 	
-	mkdir /var/www/gitorious/tmp
-	mkdir /var/www/gitorious/tarballs
-	mkdir /var/www/gitorious/repositories
-	mkdir /var/www/gitorious/pids
-	mkdir /var/www/gitorious/site/tmp/pids
-	mkdir /var/www/gitorious/.ssh
+	mkdir "${HOME_DIR}"/tmp
+	mkdir "${HOME_DIR}"/tarballs
+	mkdir "${HOME_DIR}"/repositories
+	mkdir "${HOME_DIR}"/pids
+	mkdir "${HOME_DIR}"/site/tmp/pids
+	mkdir "${HOME_DIR}"/.ssh
+	touch "${HOME_DIR}"/.ssh/authorized_keys
 	
 	RAILS_ENV="production" rake ultrasphinx:configure
 	
-	chown -R git:git /var/www/gitorious
+	chown -R git:git "${HOME_DIR}"
+	chmod 700 "${HOME_DIR}"/.ssh
+	chmod 600 "${HOME_DIR}"/.ssh/authorized_keys
+	chmod 744 "${HOME_DIR}"/site/data/hooks/pre*
+	chmod 744 "${HOME_DIR}"/site/data/hooks/post*
 	
 	echo "If you haven't initialed mysql you will need to."
 	echo "# /usr/bin/mysql_install_db"
@@ -115,6 +121,7 @@ pkg_postinst() {
 	echo "# mysql < /var/www/gitorious/site/config/createdb.sql"
 	echo "# cd /var/www/gitorious/site"
 	echo "# RAILS_ENV=\"production\" rake db:migrate"
+	echo "# RAILS_ENV=\"production\" rake ultraphinx:configure"
 	echo
 	echo "Services need to be started are: mysql, nginx, memcahced, stompserver"
 	echo "You can either restart or manually start what is in the crontab."
