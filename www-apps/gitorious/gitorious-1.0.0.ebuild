@@ -116,5 +116,7 @@ pkg_postinst() {
 	echo
 	echo "Services need to be started are: mysql, nginx, memcahced, stompserver"
 	echo "You can either restart or manually start what is in the crontab."
+	echo
+	echo "You will need to add git.local to /etc/hosts to run as is or create dns entries and edit the gitorious.yml and nginx.conf accordingly"
 }
 

@@ -1,7 +1,7 @@
 production:
   gitorious_user: git
   repository_base_path: /var/www/gitorious/repositories
-  gitorious_host: localhost
+  gitorious_host: git.localhost
   gitorious_client_host: localhost
   gitorious_client_port: 80
   archive_cache_dir: /var/www/gitorious/tarballs
