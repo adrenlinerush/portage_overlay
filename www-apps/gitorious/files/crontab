@@ -1,4 +1,4 @@
-@reboot   cd /var/www/gitorious/site && script/git-daemon -d
-@reboot   cd /var/www/gitorious/site && script/poller start
+@reboot   cd /var/www/gitorious/site && RAILS_ENV="production" script/git-daemon -d
+@reboot   cd /var/www/gitorious/site && RAILS_ENV="production" script/poller start
 @reboot   cd /var/www/gitorious/site && RAILS_ENV="production" /usr/bin/rake ultrasphinx:daemon:start
 * * * * * cd /var/www/gitorious/site && RAILS_ENV="production" /usr/bin/rake ultrasphinx:index
