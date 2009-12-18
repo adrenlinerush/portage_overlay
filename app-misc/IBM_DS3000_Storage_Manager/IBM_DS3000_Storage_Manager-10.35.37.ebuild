@@ -6,11 +6,11 @@ inherit eutils
 
 DESCRIPTION="IBM DS3300 SAN Management Utilities"
 
-HOMEPAGE="http://gitorious.org/gitorious"
+HOMEPAGE="http://www-03.ibm.com/systems/storage/disk/ds3000/ds3300/"
 SRC_URI="http://adrenlinerush.net/package/${P}.tar.gz"
 LICENSE=""
 SLOT="0"
-KEYWORDS="amd64 ~ppc x86 ~x86-fbsd"
+KEYWORDS="amd64 ~x86"
 IUSE=""
 
 DEST_DIR="/"
